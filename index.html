@@ -5,21 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Smart Chef</title>
   <link rel="stylesheet" href="style.css">
-  <!-- TensorFlow.js -->
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
-  <!-- GPT4All.js (browser-based AI) -->
-  <script src="https://cdn.jsdelivr.net/gh/nomic-ai/gpt4all/gpt4all.min.js"></script>
 </head>
 <body>
   <h1>👩‍🍳 Smart Chef</h1>
   <p>Scan ingredients or type them to get recipes!</p>
 
-  <!-- Image input -->
   <input type="file" accept="image/*" capture="environment" id="imageInput">
   <br>
-  <!-- Manual input -->
-  <textarea id="manualInput" placeholder="Or type ingredients (e.g., tomato, egg, cheese)"></textarea>
+  <textarea id="manualInput" placeholder="Or type ingredients, e.g., tomato, egg, cheese"></textarea>
   <br>
   <button id="goBtn">Find Recipes</button>
 
@@ -28,3 +23,4 @@
   <script src="script.js"></script>
 </body>
 </html>
+
