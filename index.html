@@ -5,21 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Smart Chef</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
 </head>
 <body>
   <h1>👩‍🍳 Smart Chef</h1>
-  <p>Scan or enter ingredients to get healthy recipes!</p>
+  <p>Scan or type ingredients to get recipes!</p>
 
-  <!-- Camera or image input -->
+  <!-- Camera / image input -->
   <input type="file" accept="image/*" capture="environment" id="imageInput">
-
-  <!-- Manual text input -->
-  <textarea id="manualInput" placeholder="Or type ingredients (e.g. tomato, rice, egg)"></textarea>
-
-  <!-- Action button -->
+  <br>
+  <!-- Manual input -->
+  <textarea id="manualInput" placeholder="Or type ingredients (e.g., tomato, rice, egg)"></textarea>
+  <br>
   <button id="goBtn">Find Recipes</button>
 
-  <!-- Where the results appear -->
   <div id="results"></div>
 
   <script src="script.js"></script>
