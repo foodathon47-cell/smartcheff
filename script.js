@@ -1,6 +1,6 @@
 let model;
 
-// Load MobileNet
+// Load MobileNet model
 (async function() {
   const resultsDiv = document.getElementById("results");
   resultsDiv.innerHTML = "<p>Loading AI model... ⏳</p>";
@@ -8,17 +8,14 @@ let model;
   resultsDiv.innerHTML = "<p>Model loaded ✅</p>";
 })();
 
-// Load GPT4All model
-const gpt = new GPT4All(); // GPT4All.js instance
-await gpt.load('ggml-gpt4all-j-v1.3-groovy'); // small browser model
-
+// Button click
 document.getElementById("goBtn").addEventListener("click", async () => {
   const resultsDiv = document.getElementById("results");
   resultsDiv.innerHTML = "<p>Analyzing ingredients... 🍽️</p>";
 
   let detectedIngredients = [];
 
-  // Image input
+  // Image detection
   const imageInput = document.getElementById("imageInput");
   if (imageInput.files.length > 0 && model) {
     const file = imageInput.files[0];
@@ -41,7 +38,8 @@ document.getElementById("goBtn").addEventListener("click", async () => {
   }
 });
 
-async function generateRecipes(ingredients) {
+// Tiny JS AI recipe generator
+function generateRecipes(ingredients) {
   const resultsDiv = document.getElementById("results");
   if (ingredients.length === 0) {
     resultsDiv.innerHTML = "<p>No ingredients provided.</p>";
@@ -60,21 +58,19 @@ async function generateRecipes(ingredients) {
                           <p><b>Nutrition Score:</b> ${score}/5</p>
                           <h3>Generated Recipes:</h3>`;
 
-  const prompt = `Generate 3 recipes using these ingredients: ${ingredients.join(", ")}.
-  For each recipe:
-  1. Give a creative name.
-  2. Give detailed step-by-step instructions including cooking/baking temperatures if needed.`;
-
-  const recipesText = await gpt.generate(prompt, { max_tokens: 500 });
-
-  // Simple splitting assuming GPT separates recipes with line breaks
-  const recipeArray = recipesText.split(/\n{2,}/).filter(r => r.trim() !== "");
-
-  recipeArray.forEach((recipeText, idx) => {
+  ingredients.forEach((ing, idx) => {
+    // Tiny AI template
+    const recipeName = `${ing.charAt(0).toUpperCase() + ing.slice(1)} Delight`;
+    const instructions = `
+      1. Prepare ${ing} by washing and chopping.
+      2. Cook ${ing} on medium heat for 10 minutes.
+      3. Add spices and seasoning.
+      4. Serve hot and enjoy your ${recipeName}!
+    `;
     resultsDiv.innerHTML += `
       <div class="recipe-card">
-        <h4>Recipe ${idx + 1}</h4>
-        <p>${recipeText}</p>
+        <h4>${recipeName}</h4>
+        <p>${instructions}</p>
       </div>
     `;
   });
