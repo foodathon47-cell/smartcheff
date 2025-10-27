@@ -1,13 +1,16 @@
 let model;
-const spoonacularKey = "d34a6368a50546189cea0fa16a85b838
-"; // Replace with your key
 
+// Load MobileNet
 (async function() {
   const resultsDiv = document.getElementById("results");
   resultsDiv.innerHTML = "<p>Loading AI model... ⏳</p>";
   model = await mobilenet.load();
   resultsDiv.innerHTML = "<p>Model loaded ✅</p>";
 })();
+
+// Load GPT4All model
+const gpt = new GPT4All(); // GPT4All.js instance
+await gpt.load('ggml-gpt4all-j-v1.3-groovy'); // small browser model
 
 document.getElementById("goBtn").addEventListener("click", async () => {
   const resultsDiv = document.getElementById("results");
@@ -26,7 +29,7 @@ document.getElementById("goBtn").addEventListener("click", async () => {
     img.onload = async () => {
       const predictions = await model.classify(img);
       detectedIngredients = predictions.slice(0, 5).map(p => p.className);
-      fetchRecipes(detectedIngredients);
+      generateRecipes(detectedIngredients);
     };
   } else {
     const manual = document.getElementById("manualInput").value
@@ -34,11 +37,11 @@ document.getElementById("goBtn").addEventListener("click", async () => {
                     .split(",")
                     .map(i => i.trim())
                     .filter(i => i);
-    fetchRecipes(manual);
+    generateRecipes(manual);
   }
 });
 
-async function fetchRecipes(ingredients) {
+async function generateRecipes(ingredients) {
   const resultsDiv = document.getElementById("results");
   if (ingredients.length === 0) {
     resultsDiv.innerHTML = "<p>No ingredients provided.</p>";
@@ -55,32 +58,24 @@ async function fetchRecipes(ingredients) {
 
   resultsDiv.innerHTML = `<h3>Ingredients Detected:</h3><p>${ingredients.join(", ")}</p>
                           <p><b>Nutrition Score:</b> ${score}/5</p>
-                          <h3>Suggested Recipes:</h3>`;
+                          <h3>Generated Recipes:</h3>`;
 
-  try {
-    const ingString = ingredients.join(",");
-    // Step 1: Get recipes by ingredients
-    const response = await fetch(`https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingString}&number=3&apiKey=${spoonacularKey}`);
-    const recipes = await response.json();
+  const prompt = `Generate 3 recipes using these ingredients: ${ingredients.join(", ")}.
+  For each recipe:
+  1. Give a creative name.
+  2. Give detailed step-by-step instructions including cooking/baking temperatures if needed.`;
 
-    // Step 2: For each recipe, get full instructions
-    for (const recipe of recipes) {
-      const infoResponse = await fetch(`https://api.spoonacular.com/recipes/${recipe.id}/information?includeNutrition=false&apiKey=${spoonacularKey}`);
-      const info = await infoResponse.json();
+  const recipesText = await gpt.generate(prompt, { max_tokens: 500 });
 
-      // Combine instructions into a readable string
-      const steps = info.analyzedInstructions.length > 0 ?
-                    info.analyzedInstructions[0].steps.map(s => `${s.number}. ${s.step}`).join("<br>") :
-                    "Instructions not available";
+  // Simple splitting assuming GPT separates recipes with line breaks
+  const recipeArray = recipesText.split(/\n{2,}/).filter(r => r.trim() !== "");
 
-      resultsDiv.innerHTML += `
-        <div class="recipe-card">
-          <h4>${info.title}</h4>
-          <img src="${info.image}" alt="${info.title}" />
-          <p>${steps}</p>
-        </div>
-      `;
-    }
-
-  } catch (err) {
-    resultsDiv.innerHTML += "<p>❌ Error fetch
+  recipeArray.forEach((recipeText, idx) => {
+    resultsDiv.innerHTML += `
+      <div class="recipe-card">
+        <h4>Recipe ${idx + 1}</h4>
+        <p>${recipeText}</p>
+      </div>
+    `;
+  });
+}
