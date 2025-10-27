@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Chef</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>👩‍🍳 Smart Chef</h1>
+  <p>Scan or enter ingredients to get healthy recipes!</p>
+
+  <!-- Camera or image input -->
+  <input type="file" accept="image/*" capture="environment" id="imageInput">
+
+  <!-- Manual text input -->
+  <textarea id="manualInput" placeholder="Or type ingredients (e.g. tomato, rice, egg)"></textarea>
+
+  <!-- Action button -->
+  <button id="goBtn">Find Recipes</button>
+
+  <!-- Where the results appear -->
+  <div id="results"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
