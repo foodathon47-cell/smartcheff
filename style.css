@@ -1,0 +1,49 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #fffaf3;
+  color: #333;
+  text-align: center;
+  margin: 20px;
+}
+
+h1 {
+  color: #ff9800;
+}
+
+input, textarea, button {
+  margin: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  width: 90%;
+  max-width: 400px;
+  font-size: 16px;
+}
+
+textarea {
+  height: 80px;
+  resize: vertical;
+}
+
+button {
+  background: #ff9800;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+button:hover {
+  background: #e68900;
+}
+
+#results {
+  margin-top: 20px;
+}
+
+iframe {
+  border: none;
+  margin-top: 20px;
+  width: 100%;
+  max-width: 600px;
+}
